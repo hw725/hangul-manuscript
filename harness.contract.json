@@ -1,0 +1,171 @@
+{
+  "v": 2,
+  "intake": "approved",
+  "intent": {
+    "purpose": {
+      "text": "VS Code 확장 HanMark(gkman1, v0.15.0, MIT)의 기능을 Obsidian 플러그인 Hangul Manuscript(id hangul-manuscript)로 이식해 사용·공유·게시한다",
+      "source": "user"
+    },
+    "scope": {
+      "text": "전 기능 이식: ①겹낫표 입력(끔/자동/켬, 자동은 외부 프로세스 없이 추정) ②주석 삽입·복귀·자동 재정렬 ③문단 스타일 명령(바탕글·인용·제목1~6, 기본 단축키는 두지 않음) ④HWPX 내보내기(각주/미주·그림·굵게/기울임·인용문 빈 줄·따옴표·낫표 폭·템플릿·저장 시 내보내기) ⑤원고지 매수 상태바 ⑥한글 줄바꿈 단위(글자/어절) ⑦반각/전각 변환 + 설정 탭",
+      "source": "user"
+    },
+    "evidence": {
+      "text": "원본 동작 명세는 VSIX 0.15.0의 readme.md·package.json(공개 소스 저장소 없음, dist는 minified)",
+      "source": "assumed"
+    },
+    "screen": {
+      "text": "Obsidian 시험 vault에서 편집 기능 동작, 한컴오피스에서 내보낸 HWPX 열람 — 사람이 확인(C-005·C-006)",
+      "source": "assumed"
+    },
+    "data": {
+      "text": "읽기 전용 원본 없음. 원본 VSIX 압축 해제본은 scratchpad에만 둔다",
+      "source": "assumed"
+    },
+    "original": {
+      "text": "라이선스 MIT + 원 저작자 표시(Copyright (c) 2026 hangul-office-keys contributors / Jinseok Choi gkman1)를 LICENSE·README에 유지",
+      "source": "user"
+    },
+    "verification": {
+      "text": "단위 시험(vitest)·타입검사·빌드·Obsidian 심사 lint(eslint-plugin-obsidianmd)·라이선스 표기 검사 + 사람 확인 2건",
+      "source": "assumed"
+    },
+    "publish": {
+      "text": "hw725/hangul-manuscript 독립 git repo. GitHub 공개 repo 생성·릴리스·obsidian-releases PR은 완성 후 사용자에게 따로 승인받는다",
+      "source": "user"
+    },
+    "cost": {
+      "text": "외부 AI 호출 없음. npm 의존성 설치만",
+      "source": "assumed"
+    }
+  },
+  "watch": [
+    "*.ts",
+    "*.mjs",
+    "*.json",
+    "*.css",
+    "*.hwpx",
+    "LICENSE",
+    "README.md"
+  ],
+  "conditions": [
+    {
+      "id": "C-001",
+      "text": "단위 시험(낫표 변환·주석 재정렬·문단 스타일·원고지 계산·반각/전각·따옴표·HWPX 구조 검사)이 전부 통과하고, 개수가 이전 통과보다 줄지 않는다",
+      "judge": "deterministic",
+      "check": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run"
+        ],
+        "traceback_fatal": false,
+        "count_regex": "Tests\\s+(\\d+) passed",
+        "expect_regex": [
+          "Tests\\s+\\d+ passed"
+        ],
+        "reuse": true
+      },
+      "origin": {
+        "kind": "user-intent",
+        "date": "2026-10-15"
+      },
+      "status": "active"
+    },
+    {
+      "id": "C-002",
+      "text": "TypeScript 타입 검사가 오류 없이 끝난다",
+      "judge": "deterministic",
+      "check": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-noEmit",
+          "-skipLibCheck"
+        ],
+        "traceback_fatal": false,
+        "reuse": true
+      },
+      "origin": {
+        "kind": "user-intent",
+        "date": "2026-10-15"
+      },
+      "status": "active"
+    },
+    {
+      "id": "C-003",
+      "text": "프로덕션 빌드가 main.js를 만든다",
+      "judge": "deterministic",
+      "check": {
+        "argv": [
+          "node",
+          "esbuild.config.mjs",
+          "production"
+        ],
+        "traceback_fatal": false,
+        "expect_regex": [
+          "build ok"
+        ],
+        "reuse": true
+      },
+      "origin": {
+        "kind": "user-intent",
+        "date": "2026-10-15"
+      },
+      "status": "active"
+    },
+    {
+      "id": "C-004",
+      "text": "Obsidian 커뮤니티 심사 lint(eslint-plugin-obsidianmd)가 오류 0으로 통과하고, LICENSE에 원 저작자 저작권 줄이 그대로 있고 README에 원본 출처가 적혀 있다",
+      "judge": "deterministic",
+      "check": {
+        "argv": [
+          "node",
+          "scripts/check-release.mjs"
+        ],
+        "traceback_fatal": false,
+        "expect_regex": [
+          "^release check ok\\s*$"
+        ],
+        "reuse": true
+      },
+      "origin": {
+        "kind": "user-intent",
+        "date": "2026-10-15"
+      },
+      "status": "active"
+    },
+    {
+      "id": "C-005",
+      "text": "Obsidian 시험 vault에서 사용자가 겹낫표 입력(켬·자동), 주석 삽입·복귀·저장 시 재정렬, 문단 스타일 명령, 원고지 매수 상태바, 줄바꿈 단위, 반각/전각 변환이 동작하는 것을 확인한다",
+      "judge": "human",
+      "check": {
+        "queue": ".harness/human-queue.jsonl"
+      },
+      "origin": {
+        "kind": "user-intent",
+        "date": "2026-10-15"
+      },
+      "status": "active"
+    },
+    {
+      "id": "C-006",
+      "text": "시험 원고(각주·그림·인용문·굵게/기울임·따옴표)를 내보낸 HWPX를 사용자가 한컴오피스에서 열어 진짜 각주(또는 미주)·그림·스타일이 정상인 것을 확인한다",
+      "judge": "human",
+      "check": {
+        "queue": ".harness/human-queue.jsonl"
+      },
+      "origin": {
+        "kind": "user-intent",
+        "date": "2026-10-15"
+      },
+      "status": "active"
+    }
+  ],
+  "approved": {
+    "hash": "62080433bb1a000e4cfe74ff8a55ad7c07310420d0ca08e5be9eed4be1cbd8d6",
+    "request": "A-3427ea1d",
+    "ts": "2026-10-15T13:59:17",
+    "guards": {}
+  }
+}

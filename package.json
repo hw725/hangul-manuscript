@@ -1,0 +1,39 @@
+{
+  "name": "hangul-manuscript",
+  "version": "0.1.0",
+  "description": "Obsidian에서 한글 원고를 쓰는 플러그인 — 겹낫표 입력, 주석 자동 정렬, 문단 스타일, 원고지 분량, HWPX(각주/미주·그림) 내보내기. VS Code 확장 HanMark(gkman1)의 이식판.",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+    "test": "vitest run",
+    "lint": "eslint src",
+    "check": "node scripts/check-release.mjs"
+  },
+  "keywords": [
+    "obsidian",
+    "hangul",
+    "korean",
+    "hwpx",
+    "footnote"
+  ],
+  "author": "hw725",
+  "license": "MIT",
+  "devDependencies": {
+    "@codemirror/state": "^6.5.0",
+    "@codemirror/view": "^6.38.6",
+    "@eslint/js": "9.39.1",
+    "@types/node": "20.19.25",
+    "esbuild": "0.25.12",
+    "eslint": "9.39.1",
+    "eslint-plugin-obsidianmd": "0.4.2",
+    "obsidian": "1.13.1",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.46.4",
+    "vitest": "4.1.10"
+  },
+  "dependencies": {
+    "jszip": "3.10.1"
+  }
+}

@@ -1,0 +1,15 @@
+/* 한글 줄바꿈 단위 — 편집기(원문·실시간 미리보기)와 읽기 보기 */
+body.hangul-manuscript-break-character .markdown-source-view.mod-cm6 .cm-content,
+body.hangul-manuscript-break-character .markdown-preview-view {
+	word-break: normal;
+}
+
+body.hangul-manuscript-break-word .markdown-source-view.mod-cm6 .cm-content,
+body.hangul-manuscript-break-word .markdown-preview-view {
+	word-break: keep-all;
+	overflow-wrap: anywhere;
+}
+
+.hangul-manuscript-detail {
+	color: var(--text-muted);
+}
