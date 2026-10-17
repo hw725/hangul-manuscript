@@ -8,7 +8,7 @@ Obsidian에서 한글 원고를 쓰는 플러그인입니다. 겹낫표 입력, 
 
 ## VS Code HanMark의 Obsidian판
 
-이 플러그인은 Jinseok Choi(gkman1)가 만든 VS Code 확장 [HanMark](https://marketplace.visualstudio.com/items?itemName=gkman1.vscode-hanmark) 0.15.0을 **원 저작자의 허락을 받아** Obsidian판으로 만든 것입니다. 원본과 같은 MIT 라이선스로 원 저작자 표시(Copyright (c) 2026 hangul-office-keys contributors)를 유지합니다([LICENSE](LICENSE)). 각주 재정렬·따옴표·원고지·HWPX 생성 규칙은 원본과 같은 결과를 내도록 옮겼고, 시험(`tests/parity.test.ts`)이 원본 코드와 출력을 대조합니다.
+이 플러그인은 Jinseok Choi(gkman1)가 만든 VS Code 확장 [HanMark](https://marketplace.visualstudio.com/items?itemName=gkman1.vscode-hanmark) 0.15.0을 **원 저작자의 허락을 받아** Obsidian판으로 만든 것입니다. 원본과 같은 MIT 라이선스로 원 저작자 표시(Copyright (c) 2026 hangul-office-keys contributors)를 유지합니다([LICENSE](LICENSE)). 각주 재정렬·따옴표·원고지·HWPX 생성 규칙은 원본과 같은 결과를 냅니다.
 
 Obsidian 커뮤니티의 [HanMark](https://github.com/laguna821/hanmark)(laguna821, HWP 가져오기·내보내기)와는 다른 프로젝트입니다.
 
@@ -26,7 +26,7 @@ VS Code와 Obsidian의 환경 차이 때문에 다음은 원본과 다르게 동
 
 ### 1. 겹낫표 입력
 
-상태 표시줄의 `「」 끔` 항목을 누르거나 명령 **「겹낫표 입력 모드 전환」**으로 **끔 → 자동 → 켬**을 바꿉니다. 상태 표시줄이 없는 모바일에서는 노트 머리(제목 줄 오른쪽)의 `「」끔` 단추가 현재 모드를 보여 주고, 누르면 모드를 고르는 메뉴가 열립니다.
+상태 표시줄의 `「」 끔` 항목을 누르거나 명령 「**겹낫표 입력 모드 전환**」으로 **끔 → 자동 → 켬**을 바꿉니다. 상태 표시줄이 없는 모바일에서는 노트 머리(제목 줄 오른쪽)의 `「」끔` 단추가 현재 모드를 보여 주고, 누르면 모드를 고르는 메뉴가 열립니다.
 
 | 키 | 입력 결과 |
 |----|-----------|
@@ -49,9 +49,9 @@ VS Code와 Obsidian의 환경 차이 때문에 다음은 원본과 다르게 동
   | 닫는 `]` `}` | 같은 문단에 열린 「 『 가 있을 때만 」 』 |
   | 그 밖 | 「 『 |
 
-  - **Windows 데스크톱에서는 한 겹을 더합니다.** 괄호 키를 누르는 순간 Windows 입력기(IME)에 한/영 상태를 직접 물어(원본과 같은 방식) 영어 입력 중이면 바꾸지 않습니다. 이를 위해 자동 모드를 켜면 작은 PowerShell 보조 프로세스를 하나 띄워 둡니다. 창이 뜨지 않고, 네트워크·파일에 접근하지 않으며, 입력기 상태만 읽습니다(`src/editor/ime-windows.ts`). 첫 질의는 준비에 1초 남짓, 그 뒤로는 몇 ms입니다. 상태를 읽지 못하면 원래 괄호를 넣습니다. 한글을 조합하던 중에 누른 괄호는 그 자체로 한글 상태라는 증거라 묻지 않습니다. 명령 **「입력기 한/영 상태 진단」**으로 지금 읽히는 값을 볼 수 있습니다.
+  - **Windows 데스크톱에서는 한 겹을 더합니다.** 괄호 키를 누르는 순간 Windows 입력기(IME)에 한/영 상태를 직접 물어(원본과 같은 방식) 영어 입력 중이면 바꾸지 않습니다. 이를 위해 자동 모드를 켜면 작은 PowerShell 보조 프로세스를 하나 띄워 둡니다. 창이 뜨지 않고, 네트워크·파일에 접근하지 않으며, 입력기 상태만 읽습니다(`src/editor/ime-windows.ts`). 첫 질의는 준비에 1초 남짓, 그 뒤로는 몇 ms입니다. 상태를 읽지 못하면 원래 괄호를 넣습니다. 한글을 조합하던 중에 누른 괄호는 그 자체로 한글 상태라는 증거라 묻지 않습니다. 명령 「**입력기 한/영 상태 진단**」으로 지금 읽히는 값을 볼 수 있습니다.
   - macOS·모바일에서는 입력기 상태를 읽을 공개된 방법이 없어 문맥 규칙만 씁니다. 그래서 영문 원고에서 `[sic]`처럼 문법이 아닌 괄호를 칠 때도 낫표가 되는데, 바로 백스페이스를 누르면 원래 괄호로 돌아갑니다. 마크다운 링크 `[글](주소)`도 같습니다(Obsidian에서는 `[[링크]]`가 기본이라 드문 경우로 보았습니다).
-  - **모바일 화면 키보드**: 아이폰(한글 두벌식 화면 키보드)과 안드로이드에서 낫표 변환을 확인했습니다. 키보드에 따라 괄호를 조합 입력으로 넘기면 플러그인이 괄호를 받지 못할 수 있는데, 그때는 낫표로 바뀌지 않고 **원래 괄호가 그대로 들어갑니다**(글이 망가지지는 않습니다). 안 되는 키보드가 있으면 이슈로 알려 주시면 고치겠습니다.
+  - 괄호를 조합 입력으로 넘기는 화면 키보드에서는 낫표로 바뀌지 않고 원래 괄호가 그대로 들어갑니다.
 - **자동 닫기**: 여는 낫표를 넣으면 닫는 낫표가 함께 들어가고, 닫는 키를 누르면 바로 뒤의 닫는 낫표를 건너뜁니다. 설정에서 끌 수 있습니다.
 - 텍스트를 선택한 상태에서 여는 키를 누르면 선택 영역을 낫표로 감쌉니다.
 
@@ -66,7 +66,7 @@ VS Code와 Obsidian의 환경 차이 때문에 다음은 원본과 다르게 동
 | 각주 번호 재정렬 | 번호를 본문 등장 순서로 다시 매김 |
 
 - 삽입할 때 새 각주는 등장 순서에 맞는 번호를 받고 뒤 번호는 밀립니다. 정의도 번호순 자리에 들어갑니다.
-- **저장 명령(Ctrl+S)**을 실행하면 번호를 자동 재정렬합니다(설정에서 끌 수 있음). Obsidian은 수시로 자동 저장하므로, 타이핑 중에 번호가 바뀌지 않도록 **명시적인 저장 명령에만** 붙였습니다. 모바일에는 Ctrl+S가 없으므로 명령 팔레트에서 「각주 번호 재정렬」을 실행하세요.
+- 저장 명령(**Ctrl+S**)을 실행하면 번호를 자동 재정렬합니다(설정에서 끌 수 있음). Obsidian은 수시로 자동 저장하므로, 타이핑 중에 번호가 바뀌지 않도록 **명시적인 저장 명령에만** 붙였습니다. 모바일에는 Ctrl+S가 없으므로 명령 팔레트에서 「각주 번호 재정렬」을 실행하세요.
 - 여러 줄 각주는 블록째 움직이고, 정의 사이에 본문이 있으면 연속된 정의 묶음 안에서만 정렬합니다.
 - 코드 블록·인라인 코드(`` `[^1]` ``)·수식 안의 `[^n]`은 각주로 보지 않습니다. 문법을 설명하려고 적어 둔 표기가 저장할 때 바뀌지 않고, HWPX에도 글자 그대로 들어갑니다.
 
@@ -82,7 +82,7 @@ VS Code와 Obsidian의 환경 차이 때문에 다음은 원본과 다르게 동
 
 ### 4. HWPX 내보내기
 
-명령 **「HWPX로 내보내기」**를 실행하면 노트와 같은 폴더에 같은 이름의 `.hwpx`가 생깁니다.
+명령 「**HWPX로 내보내기**」를 실행하면 노트와 같은 폴더에 같은 이름의 `.hwpx`가 생깁니다.
 
 - **각주**는 한글의 진짜 각주/미주 객체가 됩니다(번호·구분선·배치가 한컴에서 그대로 동작).
 - **그림**: 그림 한 줄만 있는 문단은 한글 그림 객체가 되고, 원본 파일이 hwpx 안에 담깁니다. 마크다운 그림 문법과 Obsidian 임베드(`![[사진.png]]`) 둘 다 됩니다. 폭은 설정의 최대 폭(기본 6인치)을 넘지 않습니다. 못 읽은 그림은 `[그림 없음: 경로]`로 남습니다.
@@ -98,11 +98,11 @@ VS Code와 Obsidian의 환경 차이 때문에 다음은 원본과 다르게 동
 
 ### 6. 한글 줄바꿈 단위
 
-명령 **「한글 줄바꿈 단위」** 또는 설정에서 **글자 단위**(기본)·**어절 단위**·**관리 안 함**을 고릅니다. 편집기와 읽기 보기의 CSS `word-break`를 `normal`·`keep-all`로 바꿉니다. **관리 안 함**이면 테마 설정을 그대로 따릅니다.
+명령 「**한글 줄바꿈 단위**」 또는 설정에서 **글자 단위**(기본)·**어절 단위**·**관리 안 함**을 고릅니다. 편집기와 읽기 보기의 CSS `word-break`를 `normal`·`keep-all`로 바꿉니다. **관리 안 함**이면 테마 설정을 그대로 따릅니다.
 
 ### 7. 반각/전각 일괄 변환
 
-명령 **「반각/전각 일괄 변환」**으로 선택 영역(없으면 노트 전체)의 영숫자·문장부호 폭을 바꿉니다. 영인본 OCR이나 일본어권 자료에서 섞여 들어온 전각 문자를 정리하는 용도입니다. 한글·한자는 건드리지 않고, 반각 공백은 전각으로 바꾸지 않습니다. 노트 전체를 전각으로 바꿀 때는 한 번 확인합니다. 낫표·겹낫표는 다루지 않습니다 — 겹낫표에는 표준 반각 문자가 없기 때문입니다(원본 README의 설명과 같음).
+명령 「**반각/전각 일괄 변환**」으로 선택 영역(없으면 노트 전체)의 영숫자·문장부호 폭을 바꿉니다. 영인본 OCR이나 일본어권 자료에서 섞여 들어온 전각 문자를 정리하는 용도입니다. 한글·한자는 건드리지 않고, 반각 공백은 전각으로 바꾸지 않습니다. 노트 전체를 전각으로 바꿀 때는 한 번 확인합니다. 낫표·겹낫표는 다루지 않습니다 — 겹낫표에는 표준 반각 문자가 없기 때문입니다(원본 README의 설명과 같음).
 
 ## 단축키
 
@@ -138,15 +138,7 @@ Obsidian 플러그인 지침에 따라 기본 단축키를 정하지 않았습�
 
 ## 설치
 
-커뮤니티 플러그인 목록 등록 전에는 수동으로 설치합니다.
-
-1. 릴리스에서 `main.js`·`manifest.json`·`styles.css`를 받습니다.
-2. vault의 `.obsidian/plugins/hangul-manuscript/` 폴더에 넣습니다.
-3. Obsidian 설정 → 커뮤니티 플러그인에서 켭니다.
-
-[BRAT](https://github.com/TfTHacker/obsidian42-brat)를 쓰면 저장소 주소만으로 설치·갱신할 수 있습니다.
-
-Windows 데스크톱, 아이폰(iOS), 안드로이드에서 시험했습니다(화면 키보드의 겹낫표 입력 포함). macOS·Linux에서는 시험하지 않았습니다.
+Obsidian 설정 → 커뮤니티 플러그인 → 찾아보기에서 「Hangul Manuscript」를 검색해 설치하고 켭니다.
 
 ## 개발
 
@@ -169,7 +161,7 @@ Hangul Manuscript helps you write Korean manuscripts in Obsidian: corner-bracket
 
 ### Obsidian edition of VS Code HanMark
 
-This plugin is the Obsidian edition of the VS Code extension [HanMark](https://marketplace.visualstudio.com/items?itemName=gkman1.vscode-hanmark) 0.15.0 by Jinseok Choi (gkman1), **made with the original author’s permission**. It keeps the same MIT license and the original copyright notice (Copyright (c) 2026 hangul-office-keys contributors; see [LICENSE](LICENSE)). Footnote renumbering, quote conversion, manuscript count and HWPX generation follow the original’s rules, and a test suite (`tests/parity.test.ts`) compares the output with the original code.
+This plugin is the Obsidian edition of the VS Code extension [HanMark](https://marketplace.visualstudio.com/items?itemName=gkman1.vscode-hanmark) 0.15.0 by Jinseok Choi (gkman1), **made with the original author’s permission**. It keeps the same MIT license and the original copyright notice (Copyright (c) 2026 hangul-office-keys contributors; see [LICENSE](LICENSE)). Footnote renumbering, quote conversion, manuscript count and HWPX generation follow the original’s rules.
 
 It is unrelated to the Obsidian community plugin [HanMark](https://github.com/laguna821/hanmark) by laguna821 (HWP import/export).
 
@@ -185,9 +177,7 @@ Because Obsidian is a different environment from VS Code, these behave different
 
 ### Installation
 
-Until the plugin is listed in Community plugins, download `main.js`, `manifest.json` and `styles.css` from the latest release into `.obsidian/plugins/hangul-manuscript/` in your vault, then enable it in Settings → Community plugins. [BRAT](https://github.com/TfTHacker/obsidian42-brat) can install and update it from the repository address.
-
-Tested on Windows desktop, iOS (iPhone) and Android, including corner-bracket input with the on-screen Korean keyboard. Not tested on macOS or Linux.
+In Obsidian, open Settings → Community plugins → Browse, search for “Hangul Manuscript”, then install and enable it.
 
 ### License
 
