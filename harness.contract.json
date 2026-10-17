@@ -203,13 +203,57 @@
         "quote": "모바일에서 모드를 볼 수 없는 문제 — 코드로 보완"
       },
       "status": "active"
+    },
+    {
+      "id": "C-009",
+      "text": "번들(main.js)에 실행 중 script 요소 생성·new Function·eval이 없다(커뮤니티 디렉터리 자동 검토 오류·권장 항목)",
+      "judge": "deterministic",
+      "check": {
+        "argv": [
+          "node",
+          "scripts/check-bundle.mjs"
+        ],
+        "fail_regex": "^FAIL:"
+      },
+      "guards": [
+        "scripts/check-bundle.mjs"
+      ],
+      "origin": {
+        "kind": "review",
+        "date": "2026-10-17",
+        "quote": "community.obsidian.md 자동 검토 2026-10-17: CODE OBFUSCATION Error 'Code creates script elements at runtime', BEHAVIOR 'Dynamic Code Execution'"
+      },
+      "status": "active"
+    },
+    {
+      "id": "C-010",
+      "text": "목록 규칙을 지킨다: manifest 설명에 Obsidian이 없고 200자 이하·마침표로 끝남, README 첫머리에 영어 설명, LICENSE가 MIT 표준 형식",
+      "judge": "deterministic",
+      "check": {
+        "argv": [
+          "node",
+          "scripts/check-listing.mjs"
+        ],
+        "fail_regex": "^FAIL:"
+      },
+      "guards": [
+        "scripts/check-listing.mjs"
+      ],
+      "origin": {
+        "kind": "review",
+        "date": "2026-10-17",
+        "quote": "community.obsidian.md 자동 검토 2026-10-17: MANIFEST Error 'must not include the word Obsidian', short_desc 200자 제한, README Warning 'does not appear to contain English', LICENSE Warning 'not a recognized license'"
+      },
+      "status": "active"
     }
   ],
   "approved": {
-    "hash": "83cd75ee7a0b2a2b108616afc272c2e2200ef83f2816533108f876a79fb44e35",
-    "request": "A-c88a6439",
-    "ts": "2026-10-17T17:32:57",
+    "hash": "a74b26cc31a939e31f24f873e439f01f808c4e6483bf721c6c1e3cce857d4e52",
+    "request": "A-9c80e6d8",
+    "ts": "2026-10-17T18:25:58",
     "guards": {
+      "scripts/check-bundle.mjs": "3bc7abbe38011e59ec0f5026ffd5f8b247d4aa58d5b96b0c4403b8eb4ff875c8",
+      "scripts/check-listing.mjs": "ef1daa7373ee979b101e0ce0762b73be6140fc24d9b1c1e3d5d9383d0a0d9793",
       "scripts/check-mobile.mjs": "e3c6849b320ba7bcf0e0ded70eb71bb38596f35cbbe3c97998f90fbc592df362",
       "scripts/check-terms.mjs": "0ae65e91647820362fe037a42513caae1679beeae525cd8e5a6268a59108e58e",
       "tests/mobile.test.ts": "cf9623f9a4053533e43b2a804a731b28ba5c16d3e156a94af0f1824594ad5656"

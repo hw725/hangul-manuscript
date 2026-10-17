@@ -1,0 +1,8 @@
+Hangul Manuscript is a port of the VS Code extension HanMark
+(gkman1.vscode-hanmark, published by Jinseok Choi), made with the original
+author's permission. HanMark is distributed under the MIT License with the
+copyright notice "Copyright (c) 2026 hangul-office-keys contributors", which is
+kept in LICENSE.
+
+The bundled assets/template-default.hwpx and the reference code in
+tests/reference/ come from that extension unchanged.

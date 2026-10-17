@@ -2,6 +2,8 @@
 
 [한국어](#vs-code-hanmark의-obsidian판) · [English](#english)
 
+Write Korean manuscripts in Obsidian with corner-bracket input, footnotes that renumber themselves, paragraph style commands and a 200-character manuscript count, then export to HWPX with real Hangul footnotes and images. This is a port of the VS Code extension HanMark by gkman1, made with the original author’s permission. The full English guide is in the [English](#english) section below.
+
 Obsidian에서 한글 원고를 쓰는 플러그인입니다. 겹낫표 입력, 각주 삽입·자동 정렬, 한컴식 문단 스타일 명령, 200자 원고지 분량을 제공하고, 완성된 노트를 한글(한컴오피스)의 **진짜 각주/미주 객체**가 담긴 HWPX로 내보냅니다.
 
 ## VS Code HanMark의 Obsidian판

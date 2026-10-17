@@ -1,6 +1,6 @@
 {
   "name": "hangul-manuscript",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Obsidian에서 한글 원고를 쓰는 플러그인 — 겹낫표 입력, 각주 자동 정렬, 문단 스타일, 원고지 분량, HWPX(각주/미주·그림) 내보내기. VS Code 확장 HanMark(gkman1)의 Obsidian판(원 저작자 허락).",
   "main": "main.js",
   "type": "module",

@@ -1,13 +1,7 @@
 MIT License
 
-Copyright (c) 2026 hangul-office-keys contributors
+Copyright (c) 2026 hangul-office-keys contributors (HanMark, gkman1.vscode-hanmark)
 Copyright (c) 2026 hw725
-
-This project is an Obsidian port of the VS Code extension "HanMark"
-(gkman1.vscode-hanmark, published by Jinseok Choi), which is distributed under
-the MIT License with the first copyright notice above. The bundled
-assets/template-default.hwpx and the reference code in tests/reference/ come
-from that extension unchanged.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
