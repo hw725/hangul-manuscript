@@ -1,9 +1,9 @@
 {
   "id": "hangul-manuscript",
   "name": "Hangul Manuscript",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "minAppVersion": "1.6.0",
-  "description": "Write Korean manuscripts: corner-bracket input, auto-renumbered footnotes, paragraph style commands, 200-character manuscript count, and HWPX export with real footnotes/endnotes and images.",
+  "description": "Write Korean manuscripts: corner-bracket input, auto-renumbered footnotes, paragraph styles, 200-character manuscript count, HWPX export with real footnotes and images. Obsidian edition of HanMark (VS Code) by gkman1.",
   "author": "hw725",
   "authorUrl": "https://github.com/hw725",
   "isDesktopOnly": false

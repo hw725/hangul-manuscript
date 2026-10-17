@@ -39,7 +39,7 @@ export const DEFAULT_SETTINGS: HangulManuscriptSettings = {
 	exportHwpxOnSave: false,
 };
 
-export const BRACKET_MODE_LABEL: Record<BracketMode, string> = { off: "끔", auto: "자동", on: "켬" };
+export { BRACKET_MODE_LABEL } from "./editor/brackets";
 
 export const LINE_BREAK_LABEL: Record<LineBreakMode, string> = {
 	character: "글자 단위",
@@ -116,11 +116,11 @@ export class HangulManuscriptSettingTab extends PluginSettingTab {
 						kind: "dropdown",
 						options: () => ({ ...LINE_BREAK_LABEL }),
 					},
-					{ key: "showManuscriptCount", name: "원고지 분량 표시", desc: "상태 표시줄에 200자 원고지 매수를 보여 줍니다.", kind: "toggle" },
+					{ key: "showManuscriptCount", name: "원고지 분량 표시", desc: "200자 원고지 매수를 상태 표시줄(모바일은 노트 머리 단추의 메뉴)에 보여 줍니다.", kind: "toggle" },
 					{
 						key: "autoRenumberOnSave",
-						name: "저장할 때 주석 번호 재정렬",
-						desc: "저장 명령(Ctrl+S)을 실행할 때 주석 번호를 본문에 나온 순서대로 다시 매깁니다. 자동 저장에는 적용하지 않습니다.",
+						name: "저장할 때 각주 번호 재정렬",
+						desc: "저장 명령(Ctrl+S)을 실행할 때 각주 번호를 본문에 나온 순서대로 다시 매깁니다. 자동 저장에는 적용하지 않습니다.",
 						kind: "toggle",
 					},
 				],
@@ -152,8 +152,8 @@ export class HangulManuscriptSettingTab extends PluginSettingTab {
 					{ key: "hwpxQuoteBlankLines", name: "인용문 앞뒤 빈 줄", desc: "인용문(> ) 문단 묶음의 앞과 뒤에 빈 줄을 한 줄씩 넣습니다.", kind: "toggle" },
 					{
 						key: "hwpxNoteType",
-						name: "주석 종류",
-						desc: "각주는 페이지 하단, 미주는 문서 끝에 놓입니다.",
+						name: "HWPX 각주 위치",
+						desc: "한글 문서에서 각주(페이지 하단) 또는 미주(문서 끝)로 넣습니다.",
 						kind: "dropdown",
 						options: () => ({ footnote: "각주", endnote: "미주" }),
 					},

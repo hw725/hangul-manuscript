@@ -13,5 +13,5 @@ export default defineConfig([
 			"obsidianmd/ui/sentence-case": ["warn", { acronyms: ["HWPX", "HWP"] }],
 		},
 	},
-	{ ignores: ["main.js", "test-vault/**", "node_modules/**", "tests/**", "scripts/**", "esbuild.config.mjs", "vitest.config.ts"] },
+	{ ignores: ["main.js", "test-vault/**", "node_modules/**", "tests/**", "scripts/**", ".harness/**", "esbuild.config.mjs", "vitest.config.ts"] },
 ]);

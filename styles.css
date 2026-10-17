@@ -13,3 +13,10 @@ body.hangul-manuscript-break-word .markdown-preview-view {
 .hangul-manuscript-detail {
 	color: var(--text-muted);
 }
+
+/* 모바일 노트 머리 단추 — 아이콘 대신 현재 겹낫표 모드를 글자로 보인다 */
+.hangul-manuscript-mobile-action {
+	font-size: var(--font-ui-small);
+	white-space: nowrap;
+	width: auto;
+}

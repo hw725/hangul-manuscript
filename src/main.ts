@@ -4,8 +4,10 @@ import {
 	type Editor,
 	type EditorPosition,
 	MarkdownView,
+	Menu,
 	Modal,
 	Notice,
+	Platform,
 	Plugin,
 	Setting,
 	SuggestModal,
@@ -19,6 +21,7 @@ import { countManuscript } from "./core/markdown";
 import { applyParagraphStyle, convertWidth, normalizeQuoteStyle, type ParagraphStyle, type WidthDirection } from "./core/text";
 import { type BracketMode, bracketExtension } from "./editor/brackets";
 import { ImeProbe } from "./editor/ime-windows";
+import { mobileMenuModel } from "./editor/mobile-menu";
 import {
 	BRACKET_MODE_LABEL,
 	DEFAULT_SETTINGS,
@@ -47,6 +50,8 @@ export default class HangulManuscriptPlugin extends Plugin {
 	private footnoteReturn: { path: string; offset: number } | null = null;
 	private readonly probe = new ImeProbe();
 	private settingTab: HangulManuscriptSettingTab | null = null;
+	/** 모바일: 노트마다 머리에 붙인 단추(상태 표시줄 대신) */
+	private readonly mobileActions = new Map<MarkdownView, HTMLElement>();
 
 	async onload() {
 		await this.loadSettings();
@@ -77,6 +82,16 @@ export default class HangulManuscriptPlugin extends Plugin {
 				if (this.footnoteReturn?.path === oldPath) this.footnoteReturn.path = file.path;
 			}),
 		);
+
+		if (Platform.isMobile) {
+			// 모바일에는 상태 표시줄이 없다 — 노트 머리 단추로 모드·원고지 매수를 보인다.
+			this.registerEvent(this.app.workspace.on("layout-change", () => this.attachMobileActions()));
+			this.app.workspace.onLayoutReady(() => this.attachMobileActions());
+			this.register(() => {
+				for (const el of this.mobileActions.values()) el.remove();
+				this.mobileActions.clear();
+			});
+		}
 
 		this.registerCommands();
 		this.app.workspace.onLayoutReady(() => this.wrapSaveCommand());
@@ -120,14 +135,14 @@ export default class HangulManuscriptPlugin extends Plugin {
 		});
 		this.addCommand({
 			id: "insert-footnote",
-			name: "주석 넣기",
+			name: "각주 넣기 (번호 자동 정렬)",
 			editorCallback: (editor, ctx) => {
 				if (ctx.file) this.insertFootnoteAt(editor, ctx.file);
 			},
 		});
 		this.addCommand({
 			id: "return-from-footnote",
-			name: "주석에서 본문으로 돌아가기",
+			name: "각주에서 본문으로 돌아가기",
 			editorCheckCallback: (checking, editor, ctx) => {
 				const r = this.footnoteReturn;
 				if (!r || !ctx.file || r.path !== ctx.file.path) return false;
@@ -141,10 +156,10 @@ export default class HangulManuscriptPlugin extends Plugin {
 		});
 		this.addCommand({
 			id: "renumber-footnotes",
-			name: "주석 번호 재정렬",
+			name: "각주 번호 재정렬",
 			editorCallback: (editor) => {
 				const r = this.renumberEditor(editor);
-				new Notice(r.changed ? `주석 ${r.count}개 번호 재정렬 완료` : r.count === 0 ? "주석이 없습니다" : "주석 번호가 이미 정렬되어 있습니다", 2000);
+				new Notice(r.changed ? `각주 ${r.count}개 번호 재정렬 완료` : r.count === 0 ? "각주가 없습니다" : "각주 번호가 이미 정렬되어 있습니다", 2000);
 			},
 		});
 
@@ -196,10 +211,61 @@ export default class HangulManuscriptPlugin extends Plugin {
 	private async cycleBracketMode() {
 		const order: BracketMode[] = ["off", "auto", "on"];
 		const i = order.indexOf(this.settings.bracketMode);
-		this.settings.bracketMode = order[(i + 1) % order.length];
+		await this.setBracketMode(order[(i + 1) % order.length]);
+	}
+
+	private async setBracketMode(mode: BracketMode) {
+		this.settings.bracketMode = mode;
 		await this.saveSettings();
 		this.settingTab?.refresh();
-		new Notice(`겹낫표 입력: ${BRACKET_MODE_LABEL[this.settings.bracketMode]}`, 1500);
+		new Notice(`겹낫표 입력: ${BRACKET_MODE_LABEL[mode]}`, 1500);
+	}
+
+	// ── 모바일 노트 머리 단추 ─────────────────────────────
+
+	private attachMobileActions() {
+		this.app.workspace.iterateAllLeaves((leaf) => {
+			const view = leaf.view;
+			if (!(view instanceof MarkdownView) || this.mobileActions.has(view)) return;
+			const el = view.addAction("quote", "겹낫표·원고지", (evt) => this.openMobileMenu(evt));
+			el.addClass("hangul-manuscript-mobile-action");
+			this.mobileActions.set(view, el);
+		});
+		this.refreshMobileActions();
+	}
+
+	private refreshMobileActions() {
+		if (this.mobileActions.size === 0) return;
+		const m = mobileMenuModel(this.settings.bracketMode, this.activeSheets());
+		for (const [view, el] of this.mobileActions) {
+			if (!el.isConnected) {
+				this.mobileActions.delete(view);
+				continue;
+			}
+			el.setText(m.badge);
+			el.setAttribute("aria-label", m.title);
+		}
+	}
+
+	private openMobileMenu(evt: MouseEvent) {
+		const m = mobileMenuModel(this.settings.bracketMode, this.activeSheets());
+		const menu = new Menu();
+		for (const x of m.modes) {
+			menu.addItem((item) => item.setTitle(x.label).setChecked(x.checked).onClick(() => void this.setBracketMode(x.mode)));
+		}
+		if (m.countLabel) {
+			const label = m.countLabel;
+			menu.addSeparator();
+			menu.addItem((item) => item.setTitle(label).setIcon("file-text").onClick(() => this.showManuscriptDetail()));
+		}
+		menu.showAtMouseEvent(evt);
+	}
+
+	/** 지금 노트(또는 선택 영역)의 원고지 매수. 마크다운 노트가 아니거나 표시를 끈 때는 null. */
+	private activeSheets(): number | null {
+		if (!this.settings.showManuscriptCount) return null;
+		const t = this.countTarget();
+		return t ? countManuscript(t.text).sheets : null;
 	}
 
 	private async showImeDiagnosis() {
@@ -221,7 +287,7 @@ export default class HangulManuscriptPlugin extends Plugin {
 		const pos = editor.offsetToPos(r.cursorOffset);
 		editor.setCursor(pos);
 		editor.scrollIntoView({ from: pos, to: pos }, true);
-		new Notice(`주석 [^${r.newNumber}] 삽입 — 「주석에서 본문으로 돌아가기」로 복귀`, 3000);
+		new Notice(`각주 [^${r.newNumber}] 삽입 — 「각주에서 본문으로 돌아가기」로 복귀`, 3000);
 	}
 
 	private renumberEditor(editor: Editor) {
@@ -391,6 +457,7 @@ export default class HangulManuscriptPlugin extends Plugin {
 
 	private refreshBracketItem() {
 		this.bracketItem?.setText(`「」 ${BRACKET_MODE_LABEL[this.settings.bracketMode]}`);
+		this.refreshMobileActions();
 	}
 
 	private scheduleCount() {
@@ -409,6 +476,7 @@ export default class HangulManuscriptPlugin extends Plugin {
 	}
 
 	private refreshCount() {
+		this.refreshMobileActions();
 		const item = this.countItem;
 		if (!item) return;
 		const t = this.settings.showManuscriptCount ? this.countTarget() : null;
@@ -435,7 +503,7 @@ export default class HangulManuscriptPlugin extends Plugin {
 		new Notice(
 			`${t.selected ? "선택 영역" : "문서 전체"}: 200자 원고지 ${c.sheets.toFixed(1)}매 (${c.rows}줄)\n` +
 				`글자 ${c.chars.toLocaleString()}자 (공백 제외 ${c.charsNoSpace.toLocaleString()}자, 영문 ${c.latinChars.toLocaleString()}자) · 어절 ${c.words.toLocaleString()}개\n` +
-				"한글(HWP) 문서통계 호환: 영문자 반 칸, 주석 포함, 마크다운 문법·빈 줄 제외",
+				"한글(HWP) 문서통계 호환: 영문자 반 칸, 각주 포함, 마크다운 문법·빈 줄 제외",
 			8000,
 		);
 	}

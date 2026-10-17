@@ -11,6 +11,8 @@ import { isLiteralContext, unmatchedOpen } from "./context";
 
 export type BracketMode = "off" | "auto" | "on";
 
+export const BRACKET_MODE_LABEL: Record<BracketMode, string> = { off: "끔", auto: "자동", on: "켬" };
+
 const PAIRS: Record<string, { open: string; close: string; closing: boolean }> = {
 	"[": { open: "「", close: "」", closing: false },
 	"]": { open: "「", close: "」", closing: true },

@@ -160,12 +160,59 @@
         "date": "2026-10-15"
       },
       "status": "active"
+    },
+    {
+      "id": "C-007",
+      "text": "사용자에게 보이는 명령 이름·알림·설정 문구는 각주 기능을 「각주」라고 부르고 「주석」을 쓰지 않는다(Obsidian 한국어판의 「주석」= %% 숨김 메모와 혼동 방지)",
+      "judge": "deterministic",
+      "check": {
+        "argv": [
+          "node",
+          "scripts/check-terms.mjs"
+        ],
+        "fail_regex": "^FAIL:"
+      },
+      "guards": [
+        "scripts/check-terms.mjs"
+      ],
+      "origin": {
+        "kind": "user-correction",
+        "date": "2026-10-17",
+        "quote": "옵시디언 자체의 주석 관련 커맨드랑 어떻게 달라? 혼동의 여지가 있어 보이네. / 각주로 바꾸고"
+      },
+      "status": "active"
+    },
+    {
+      "id": "C-008",
+      "text": "모바일(상태 표시줄 없음)에서도 노트 머리의 단추로 현재 겹낫표 모드와 원고지 매수를 보고, 모드를 바꿀 수 있다",
+      "judge": "deterministic",
+      "check": {
+        "argv": [
+          "node",
+          "scripts/check-mobile.mjs"
+        ],
+        "fail_regex": "^FAIL:"
+      },
+      "guards": [
+        "scripts/check-mobile.mjs",
+        "tests/mobile.test.ts"
+      ],
+      "origin": {
+        "kind": "user-correction",
+        "date": "2026-10-17",
+        "quote": "모바일에서 모드를 볼 수 없는 문제 — 코드로 보완"
+      },
+      "status": "active"
     }
   ],
   "approved": {
-    "hash": "62080433bb1a000e4cfe74ff8a55ad7c07310420d0ca08e5be9eed4be1cbd8d6",
-    "request": "A-3427ea1d",
-    "ts": "2026-10-15T13:59:17",
-    "guards": {}
+    "hash": "83cd75ee7a0b2a2b108616afc272c2e2200ef83f2816533108f876a79fb44e35",
+    "request": "A-c88a6439",
+    "ts": "2026-10-17T17:32:57",
+    "guards": {
+      "scripts/check-mobile.mjs": "e3c6849b320ba7bcf0e0ded70eb71bb38596f35cbbe3c97998f90fbc592df362",
+      "scripts/check-terms.mjs": "0ae65e91647820362fe037a42513caae1679beeae525cd8e5a6268a59108e58e",
+      "tests/mobile.test.ts": "cf9623f9a4053533e43b2a804a731b28ba5c16d3e156a94af0f1824594ad5656"
+    }
   }
 }
