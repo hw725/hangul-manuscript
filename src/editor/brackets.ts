@@ -250,7 +250,7 @@ export function bracketExtension(host: BracketHost): Extension {
 			if (host.mode() !== "auto" || !host.probe.available || e.ctrlKey || e.metaKey || e.altKey) return false;
 			const ch = bracketFromKey(e.code, e.shiftKey);
 			if (!ch) return false;
-			if (e.isComposing || e.keyCode === 229 || view.composing) {
+			if (e.isComposing || e.key === "Process" || view.composing) {
 				// 조합 중 = 한글 상태. 문법 문맥만 보고 정한다.
 				const out = autoDecide(view.state, ch, null, false);
 				fromComposition = out?.kind === "convert" ? ch : null;

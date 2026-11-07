@@ -266,17 +266,83 @@
         "quote": "「HWPX로 내보내기」 이런 게 그대로 남아있잖아. 그리고 퍼블리시 이전의 과정에 대한 정보들까지 구구절절 담을 필요는 없다고 내가 몇 번을 말해??"
       },
       "status": "active"
+    },
+    {
+      "id": "C-012",
+      "text": "소스가 폐기 예정 API keyCode·setWarning·display를 직접 부르지 않는다(1.13 미만 호환은 동적 접근). display() 정의 자체는 minAppVersion 1.6을 지키는 동안 공식 lint(require-display)가 요구하므로 예외",
+      "judge": "deterministic",
+      "check": {
+        "argv": [
+          "node",
+          "scripts/check-deprecated.mjs"
+        ],
+        "fail_regex": "^FAIL:"
+      },
+      "guards": [
+        "scripts/check-deprecated.mjs"
+      ],
+      "origin": {
+        "kind": "review",
+        "date": "2026-11-07",
+        "quote": "community.obsidian.md 자동 검토 2026-11-07: keyCode is deprecated / setWarning is deprecated / display is deprecated"
+      },
+      "status": "active"
+    },
+    {
+      "id": "C-013",
+      "text": "README.md는 영어판(라틴 문자 90% 이상), 한국어판은 README.ko.md이고 서로 링크한다",
+      "judge": "deterministic",
+      "check": {
+        "argv": [
+          "node",
+          "scripts/check-readme-lang.mjs"
+        ],
+        "fail_regex": "^FAIL:"
+      },
+      "guards": [
+        "scripts/check-readme-lang.mjs"
+      ],
+      "origin": {
+        "kind": "review",
+        "date": "2026-11-07",
+        "quote": "community.obsidian.md 자동 검토 2026-11-07: README does not appear to contain English text"
+      },
+      "status": "active"
+    },
+    {
+      "id": "C-014",
+      "text": "릴리스 발행 시 Actions가 태그를 다시 빌드해 main.js 바이트를 대조하고 main.js·manifest.json·styles.css에 출처 증명을 붙인다",
+      "judge": "deterministic",
+      "check": {
+        "argv": [
+          "node",
+          "scripts/check-attest.mjs"
+        ],
+        "fail_regex": "^FAIL:"
+      },
+      "guards": [
+        "scripts/check-attest.mjs"
+      ],
+      "origin": {
+        "kind": "review",
+        "date": "2026-11-07",
+        "quote": "community.obsidian.md 자동 검토 2026-11-07: Missing GitHub artifact attestations for release assets"
+      },
+      "status": "active"
     }
   ],
   "approved": {
-    "hash": "d5525d905bd925551763e8d2066bf6057f95ad7c2bc97ae737a1697657031e82",
-    "request": "A-af33f5be",
-    "ts": "2026-10-17T18:43:50",
+    "hash": "dba82e0c237fca3b7fa22b20d32d35a5809059b424b9ee9077fc66825f1f171c",
+    "request": "A-131583f8",
+    "ts": "2026-11-07T13:34:09",
     "guards": {
+      "scripts/check-attest.mjs": "37b44ca17c831f3ad1de8c5a2bdb86c3204951dfba3999b0b16520e33977421b",
       "scripts/check-bundle.mjs": "3bc7abbe38011e59ec0f5026ffd5f8b247d4aa58d5b96b0c4403b8eb4ff875c8",
+      "scripts/check-deprecated.mjs": "aa8b61897b4bf8b5600e881e3782bce19b430ce1fa8f018a370a93f63115ce8d",
       "scripts/check-listing.mjs": "ef1daa7373ee979b101e0ce0762b73be6140fc24d9b1c1e3d5d9383d0a0d9793",
       "scripts/check-mobile.mjs": "e3c6849b320ba7bcf0e0ded70eb71bb38596f35cbbe3c97998f90fbc592df362",
-      "scripts/check-readme.mjs": "e7a636c952defa4ab8332c4096d41b23f6d16d75d74950f344634cb53c0ae5e2",
+      "scripts/check-readme-lang.mjs": "f0da0b5277481b4a013b46e2bbac121551da39e82a4c39c12479ed25bf716735",
+      "scripts/check-readme.mjs": "13bc229543ee65a29b15c468c70452dadf8f401b903b310164298040be59eb74",
       "scripts/check-terms.mjs": "0ae65e91647820362fe037a42513caae1679beeae525cd8e5a6268a59108e58e",
       "tests/mobile.test.ts": "cf9623f9a4053533e43b2a804a731b28ba5c16d3e156a94af0f1824594ad5656"
     }

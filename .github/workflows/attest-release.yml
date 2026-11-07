@@ -1,0 +1,57 @@
+# 릴리스를 발행하면 그 태그를 다시 빌드해 올린 main.js와 바이트가 같은지 확인하고,
+# 릴리스 파일(main.js·manifest.json·styles.css)에 GitHub 출처 증명(artifact attestation)을 붙인다.
+# 릴리스는 지금처럼 로컬에서 gh release create로 만든다. 이 워크플로는 릴리스를 바꾸지 않는다.
+name: Attest release assets
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to attest
+        required: true
+
+permissions:
+  contents: read
+  id-token: write
+  attestations: write
+
+jobs:
+  attest:
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event.release.tag_name || inputs.tag }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TAG }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Build
+        run: |
+          npm ci
+          npm run build
+
+      - name: Download release assets
+        run: |
+          mkdir release
+          gh release download "$TAG" --dir release --pattern main.js --pattern manifest.json --pattern styles.css
+
+      - name: Compare with release
+        run: |
+          cmp main.js release/main.js
+          cmp manifest.json release/manifest.json
+          cmp styles.css release/styles.css
+
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            release/main.js
+            release/manifest.json
+            release/styles.css

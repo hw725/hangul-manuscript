@@ -590,9 +590,9 @@ class ConfirmModal extends Modal {
 					this.onConfirm();
 				});
 				// 1.13+는 setDestructive, 그 전 버전은 setWarning.
-				const destructive = (b as unknown as { setDestructive?: () => unknown }).setDestructive;
-				if (typeof destructive === "function") destructive.call(b);
-				else b.setWarning();
+				const btn = b as unknown as Record<string, unknown>;
+				const mark = btn["setDestructive"] ?? btn["setWarning"];
+				if (typeof mark === "function") (mark as () => unknown).call(b);
 			})
 			.addButton((b) => b.setButtonText("취소").onClick(() => this.close()));
 	}

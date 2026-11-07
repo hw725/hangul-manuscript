@@ -201,7 +201,7 @@ export class HangulManuscriptSettingTab extends PluginSettingTab {
 	refresh(): void {
 		const tab = this as unknown as { update?: () => void };
 		if (typeof tab.update === "function") tab.update();
-		else if (this.containerEl.isShown()) this.display();
+		else if (this.containerEl.isShown()) this.renderLegacy();
 	}
 
 	// ── Obsidian 1.13+: 선언형 정의(설정 검색에 잡힌다) ──────────
@@ -235,8 +235,13 @@ export class HangulManuscriptSettingTab extends PluginSettingTab {
 	}
 
 	// ── Obsidian 1.13 미만: 명령형 그리기(위 정의가 쓰이면 호출되지 않는다) ──
+	// minAppVersion이 1.13 미만이라 공식 lint(require-display)가 display() 구현을 요구한다.
 
 	display(): void {
+		this.renderLegacy();
+	}
+
+	private renderLegacy(): void {
 		const { containerEl } = this;
 		containerEl.empty();
 		for (const g of this.groups()) {
