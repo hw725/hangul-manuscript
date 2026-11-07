@@ -24,13 +24,14 @@ jobs:
       TAG: ${{ github.event.release.tag_name || inputs.tag }}
       GH_TOKEN: ${{ github.token }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: ${{ env.TAG }}
 
-      - uses: actions/setup-node@v4
+      # package-lock.json은 npm 11로 만든다. npm 10(Node 20)의 npm ci는 이 lock을 거부한다.
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
 
       - name: Build
